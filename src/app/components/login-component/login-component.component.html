@@ -1,0 +1,38 @@
+<div>
+  <form>
+    <div class="row">
+      <div class="mb-3">
+        <label for="inputPhoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="inputPhoneNumber" name="phoneNumber" placeholder=""
+          [(ngModel)]="phoneNumber">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <label for="inputPassword">Password</label>
+        <input type="password" class="form-control" id="inputPassword" name="password" placeholder=""
+          [(ngModel)]="password">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <div class="alert alert-warning" *ngIf="errorMessage !== ''">
+
+          <i class="bi bi-cone-striped"></i>
+
+          <span><b> Warning - </b> {{errorMessage}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary btn-round" (click)="login()">Sign In</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <p class="text-muted">Not a member? <a [routerLink]="[ '/signup' ]">Sign in.</a></p>
+      </div>
+    </div>
+  </form>
+</div>
