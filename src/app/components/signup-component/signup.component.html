@@ -1,0 +1,65 @@
+<div>
+  <form>
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <label for="inputFirstname">First Name</label>
+        <input type="text" class="form-control" id="inputFirstname" name="inputFirstname" placeholder=""
+            [(ngModel)]="firstname">
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <label for="inputLastname">Last Name</label>
+        <input type="text" class="form-control" id="inputLastname" name="inputLastname" placeholder=""
+            [(ngModel)]="lastname">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <label for="inputPhoneNumber">Phone Number</label>
+        <input type="phone" class="form-control" id="inputPhoneNumber" name="inputPhoneNumber" placeholder=""
+            [(ngModel)]="phoneNumber">
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <label for="inputEmail">Email</label>
+        <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder=""
+            [(ngModel)]="email">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <label for="inputPassword">Password</label>
+        <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder=""
+            [(ngModel)]="password">
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <label for="inputPassword2">Verify Password</label>
+        <input type="password" class="form-control" id="inputPassword2" name="inputPassword2" placeholder=""
+            [(ngModel)]="password2">
+      </div>
+    </div>
+    <div class="row"><div class="mb-3"></div></div>
+    <div class="row">
+      <div class="mb-3">
+
+        <button type="button" (click)="signup()" class="btn btn-success">
+          <i class="bi bi-check-circle-fill"></i>
+          Sign up
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <div class="alert alert-warning" *ngIf="errorMessage !== ''">
+
+          <i class="bi bi-cone-striped"></i>
+
+          <span><b> Warning - </b> {{errorMessage}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3">
+        <p class="text-muted">Not a member? <a [routerLink]="[ '/login' ]">Sign in.</a></p>
+      </div>
+    </div>
+  </form>
+</div>

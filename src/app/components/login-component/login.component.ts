@@ -10,8 +10,8 @@ import { AccountStatus } from "../../types/account-status";
 @Component({
   selector: "app-login",
   standalone: true,
-  templateUrl: "./login-component.component.html",
-  styleUrls: ["./login-component.component.scss"],
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
   imports: [CommonModule, FormsModule, RouterModule],
 })
 export class LoginComponent implements OnInit {
