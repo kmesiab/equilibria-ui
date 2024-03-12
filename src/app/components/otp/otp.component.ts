@@ -33,13 +33,14 @@ export class OtpComponent implements OnInit {
 
     if (this.currentUser === null || this.currentUser === undefined) {
       console.log("Current user service has no current user")
-      // this.router.navigate(['/signup']);
+      this.router.navigate(['/signup']);
       return
     }
 
     if (this.currentUser.phone_number === null) {
       console.log("Current user service has no current user phone number")
-      //  this.router.navigate(['/signup']);
+      this.router.navigate(['/signup']);
+      return
     }
   }
 

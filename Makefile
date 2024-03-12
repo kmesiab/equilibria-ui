@@ -5,10 +5,11 @@ DISTRIBUTION_ID := E29WUDB6NI3YHZ
 
 .PHONY: deploy build run bust-cache
 
-deploy: build
+deploy: gulp build
 	@echo "Deploying UI to S3..."
 	aws s3 sync dist/$(PROJECT_NAME)/browser s3://$(BUCKET_NAME)
 	@echo "Deployment complete."
+	make bust-cache
 
 build:
 	@echo "Building UI..."
@@ -17,6 +18,10 @@ build:
 run:
 	@echo "Running Equlibria UI"
 	ng serve
+
+gulp:
+	@echo "Gulping project"
+	gulp
 
 bust-cache:
 	@echo "Invalidating CloudFront cache..."
