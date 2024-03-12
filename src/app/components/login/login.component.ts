@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       this.currentUserService.isLoggedIn() &&
       this.currentUserService.getUser()?.accountStatusId === AccountStatus.ACTIVE
       ) {
-      this.router.navigate(["/profile/user"]);
+      this.router.navigate(["/profile"]);
 
       return;
     }
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
 
         let user = mapApiDataToUser(response.body.user);
         this.currentUserService.setJwt(response.body.token);
-        this.router.navigate(["/profile/user"]);
+        this.router.navigate(["/profile"]);
 
         return
       },
