@@ -1,38 +1,68 @@
-<div>
-  <form>
-    <div class="row">
-      <div class="mb-3">
-        <label for="inputPhoneNumber">Phone Number</label>
-        <input type="text" class="form-control" id="inputPhoneNumber" name="phoneNumber" placeholder=""
-          [(ngModel)]="phoneNumber">
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3">
-        <label for="inputPassword">Password</label>
-        <input type="password" class="form-control" id="inputPassword" name="password" placeholder=""
-          [(ngModel)]="password">
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3">
-        <div class="alert alert-warning" *ngIf="errorMessage !== ''">
+<!-- Outer Row -->
+<div class="row justify-content-center">
 
-          <i class="bi bi-cone-striped"></i>
+  <div class="col-sm-12 col-md-9 col-lg-10">
 
-          <span><b> Warning - </b> {{errorMessage}}</span>
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+          <div class="col-lg-6">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+              </div>
+              <form class="user">
+                <div class="alert bg-gradient-warning" *ngIf="errorMessage !== ''">
+
+                  <p class="text-sm-center"><i class="bi bi-cone-striped"></i> {{errorMessage}}</p >
+                  <div class="text-sm-center"><small class="text-xs">ℹ️ Phone number must be 10 digits long in the format: +1234567890.</small></div>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-user"
+                         id="inputPhoneNumber"
+                         name="phoneNumber" placeholder="Phone Number ex: +12068675309"
+                         [(ngModel)]="phoneNumber">
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-user"
+                         id="inputPassword"
+                         name="password" placeholder="Password"
+                         [(ngModel)]="password">
+                </div>
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" class="custom-control-input"
+                           id="customCheck">
+                    <label class="custom-control-label" for="customCheck">Remember
+                      Me</label>
+                  </div>
+                </div>
+
+                <a (click)="login()" class="btn btn-primary btn-user btn-block">
+                  Sign In
+                </a>
+
+                <hr>
+                <a href="#" class="btn btn-google btn-user btn-block">
+                  <i class="fab fa-google fa-fw"></i> Login with Google
+                </a>
+                <a href="#" class="btn btn-facebook btn-user btn-block">
+                  <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                </a>
+              </form>
+              <hr>
+              <div class="small text-center">
+                <!-- <a class="small" href="forgot-password.html">Forgot Password?</a> -->
+              </div>
+              <div class="small text-center">
+                Not a member? <a [routerLink]="[ '/signup' ]">Create an account</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary btn-round" (click)="login()">Sign In</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3">
-        <p class="text-muted">Not a member? <a [routerLink]="[ '/signup' ]">Sign up.</a></p>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>

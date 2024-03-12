@@ -7,6 +7,8 @@ import {CurrentUserService} from "../../services/current-user-service.service";
 import {UserService} from "../../services/user-service.service";
 import {AccountStatus} from "../../types/account-status";
 import {User} from "../../types/user";
+import {Chart} from 'chart.js/auto';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -16,7 +18,11 @@ import {User} from "../../types/user";
   styleUrl: './user-profile.component.scss'
 })
 
-export class UserProfileComponent implements OnInit{
+export class UserProfileComponent implements OnInit {
+
+  now = new Date();
+
+  chart: any = [];
 
   user: User;
   errorMessage: string = "";
@@ -27,7 +33,7 @@ export class UserProfileComponent implements OnInit{
     private router: Router,
     private userService: UserService,
     private currentUserService: CurrentUserService
-  ){
+  ) {
     this.user = this.currentUserService.getUser()
   }
 
@@ -45,7 +51,33 @@ export class UserProfileComponent implements OnInit{
       this.router.navigate(['/login']);
       return;
     }
+
+    this.renderChart();
   }
+
+  renderChart(): void {
+    this.chart = new Chart('canvas', {
+      type: 'line',
+      data: {
+        labels: ['Happiness', 'Sadness',  'Anger', 'Anxiety', 'Fear'],
+        datasets: [{
+          label: 'Your Emotion Wave',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.4
+        }],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+
 
   closeWarning(): void {
     this.errorMessage = "";
@@ -60,6 +92,7 @@ export class UserProfileComponent implements OnInit{
 
   updateProfile(): void {
 
+    this.closeWarning();
     this.updatingUserInfo = true
     this.user.password = null;
     this.userService.update(this.user).subscribe(

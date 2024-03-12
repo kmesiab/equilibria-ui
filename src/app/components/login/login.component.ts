@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CurrentUserService } from "../../services/current-user-service.service";
+import {PhoneService} from "../../services/phone-service.service";
 import { UserService } from "../../services/user-service.service";
 import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private userService: UserService,
     private currentUserService: CurrentUserService,
+    private phoneService: PhoneService,
     private router: Router
   ) {}
 
@@ -40,11 +42,15 @@ export class LoginComponent implements OnInit {
 
   login(): void {
 
+    this.errorMessage = "";
+
     if (this.phoneNumber.trim() === "" || this.password.trim() === "") {
-      this.errorMessage = "Phone number and password are required.";
+      this.errorMessage = `Phone number and password are required.`;
 
       return
     }
+
+    this.phoneNumber = this.phoneService.normalizePhoneNumber(this.phoneNumber);
 
     this.userService.login(this.phoneNumber, this.password).subscribe(
       (response) => {
