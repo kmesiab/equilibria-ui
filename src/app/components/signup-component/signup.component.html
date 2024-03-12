@@ -36,6 +36,20 @@
             [(ngModel)]="password2">
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-3">
+        &nbsp;
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <span><small class="text-muted">If you were given a provider code, enter it here</small></span>
+
+        <input type="text" class="form-control" id="providerCode" name="providerCode" placeholder="⚕️ Provider Code"
+            [(ngModel)]="providerCode">
+      </div>
+    </div>
+
     <div class="row"><div class="mb-3"></div></div>
     <div class="row">
       <div class="mb-3">
@@ -58,7 +72,7 @@
     </div>
     <div class="row">
       <div class="mb-3">
-        <p class="text-muted">Not a member? <a [routerLink]="[ '/login' ]">Sign in.</a></p>
+        <p class="text-muted">Already a member? <a [routerLink]="[ '/login' ]">Sign in.</a></p>
       </div>
     </div>
   </form>

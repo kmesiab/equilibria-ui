@@ -27,6 +27,7 @@ export class SignupComponent {
   errorMessage = "";
   password = "";
   password2 = "";
+  providerCode = "";
 
   constructor(
     private router: Router,
