@@ -56,7 +56,7 @@ export class OtpComponent implements OnInit {
         switch (res.status) {
           case 200:
             this.userService.activate(this.currentUserService.getUser()!);
-            this.router.navigate(['/profile/user']);
+            this.router.navigate(['/profile']);
             break;
           case 304:
             this.errorMessage = 'The code you entered is incorrect';

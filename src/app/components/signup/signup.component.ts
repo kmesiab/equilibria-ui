@@ -41,7 +41,7 @@ export class SignupComponent {
     if (this.currentUserService.isLoggedIn()) {
       let u = this.currentUserService.getUser();
       if (u !== null && u.accountStatusId === AccountStatus.ACTIVE) {
-        this.router.navigate(["/profile/user"]);
+        this.router.navigate(["/profile"]);
         return;
       }
       if (u !== null) {
