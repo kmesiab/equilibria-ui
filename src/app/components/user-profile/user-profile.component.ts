@@ -3,17 +3,24 @@ import {HttpResponse} from "@angular/common/http";
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {Router, RouterModule} from "@angular/router";
+import { NrclexService } from "../../services/nrclex-service.service";
 import {CurrentUserService} from "../../services/current-user-service.service";
 import {UserService} from "../../services/user-service.service";
 import {AccountStatus} from "../../types/account-status";
+import {DailyAverage, HighestEmotion} from "../../types/emotion-reports";
 import {User} from "../../types/user";
-import {Chart} from 'chart.js/auto';
+import {Chart, ChartData, ChartOptions} from 'chart.js/auto';
+import { NrcLexEntry } from "../../types/nrclex-entry";
+import {
+  DailyEmotionGraphComponent
+} from "../daily-emotion-graph/daily-emotion-graph.component";
+import {VaderGraphComponent} from "../vader-graph/vader-graph.component";
 
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, VaderGraphComponent, DailyEmotionGraphComponent],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss'
 })
@@ -22,16 +29,42 @@ export class UserProfileComponent implements OnInit {
 
   now = new Date();
 
-  chart: any = [];
+  emotionScores: NrcLexEntry[] = [];
+  dailyAverages: { averages: Record<string, number>; day: string }[] = [];
 
   user: User;
   errorMessage: string = "";
   updateMessage: string = "";
   updatingUserInfo = false;
 
+  dailyEmotion: string = "Unsure"
+  positivityPercentage: number = 0;
+
+  borderColorPalette = [
+    'rgb(75, 192, 192)', // green (joy)
+    'rgb(255, 99, 132)', // red (anger)
+    'rgb(201, 203, 207)', // grey (fear)
+    'rgb(54, 162, 235)', // blue (sadness)
+    'rgb(153, 102, 255)', // purple (trust)
+  ];
+
+  backgroundColorPalette = [
+    'rgb(75, 192, 192)', // green (joy)
+    'rgb(255, 99, 132)', // red (anger)
+    'rgb(201, 203, 207)', // grey (fear)
+    'rgb(54, 162, 235)', // blue (sadness)
+    'rgb(153, 102, 255)', // purple (trust)
+  ];
+
+  includedEmotions: (keyof NrcLexEntry)[] = [
+    'joy', 'anger', 'fear', 'sadness', 'trust', "anticipation", "disgust", "surprise",
+    'vader_compound', 'vader_neg', 'vader_neu', 'vader_pos'
+  ];
+
   constructor(
     private router: Router,
     private userService: UserService,
+    private nrcLexService: NrclexService,
     private currentUserService: CurrentUserService
   ) {
     this.user = this.currentUserService.getUser()
@@ -52,32 +85,111 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    this.renderChart();
+    this.renderCharts();
   }
 
-  renderChart(): void {
-    this.chart = new Chart('canvas', {
-      type: 'line',
-      data: {
-        labels: ['Happiness', 'Sadness',  'Anger', 'Anxiety', 'Fear'],
-        datasets: [{
-          label: 'Your Emotion Wave',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.4
-        }],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
+  renderCharts(): void {
+    const userId: number = this.user.id || 0;
+
+    if (userId === 0) {
+      console.log("No user ID set, cannot get emotions, cannot render chart");
+      return;
+    }
+
+    this.nrcLexService.getEmotionsForDay(userId).subscribe({
+      next: (emotions) => this.handleFetchEmotions(emotions),
+      error: (error) => this.showErrorMessage(error)
     });
   }
 
+  handleFetchEmotions(entries: NrcLexEntry[]): void {
+    if (!Array.isArray(entries) || entries.length === 0) {
+      console.error('Entries is not an array or is empty:', entries);
+      return;
+    }
+
+    this.emotionScores = entries.reverse();
+
+    const groupedByDay: { [key: string]: NrcLexEntry[] } = {};
+
+    // Populate groupedByDay with entries
+    entries.forEach(entry => {
+      // Assuming 'created_at' is a string representing the date and time
+      const day = new Date(entry.created_at).toISOString().split('T')[0]; // Extract the date part
+      if (!groupedByDay[day]) {
+        groupedByDay[day] = [];
+      }
+      groupedByDay[day].push(entry);
+    });
+
+    this.dailyAverages = Object.keys(groupedByDay).map(day => {
+      const dayEntries = groupedByDay[day];
+      const dailySums: Record<string, number> = {};
+      const counts: Record<string, number> = {};
+
+      this.includedEmotions.forEach(emotion => {
+        dailySums[emotion] = 0;
+        counts[emotion] = 0;
+      });
+
+      dayEntries.forEach(entry => {
+        this.includedEmotions.forEach(emotion => {
+          const value = entry[emotion];
+          if (typeof value === 'number') {
+            dailySums[emotion] += value;
+            counts[emotion]++;
+          }
+        });
+      });
+
+      const averages = Object.keys(dailySums).reduce((acc, emotion) => {
+        acc[emotion] = dailySums[emotion] / counts[emotion];
+        return acc;
+      }, {} as Record<string, number>);
+
+      return {day, averages};
+    });
+
+    if (this.dailyAverages.length === 0) {
+      console.log("No daily averages found, cannot render chart");
+      return;
+    }
+
+    let topEmotion = this.findHighestEmotion(this.dailyAverages)
+    this.dailyEmotion = topEmotion[0].emotion.toUpperCase()
+
+    console.log(this.dailyAverages)
+
+    let vaderSentiment =
+      (this.dailyAverages[0].averages['vader_neu'] +
+      this.dailyAverages[0].averages['vader_pos']) -
+      this.dailyAverages[0].averages['vader_neg'];
+
+    this.positivityPercentage = Math.round(vaderSentiment * 100);
+
+
+  }
+
+  findHighestEmotion(dailyAverages: DailyAverage[]): HighestEmotion[] {
+    return dailyAverages.map(({ day, averages }) => {
+      let highestEmotion = '';
+      let highestValue = -Infinity;
+
+      Object.entries(averages).forEach(([emotion, value]) => {
+
+        if (value > highestValue && emotion.indexOf("vader") < 0 ) {
+          highestEmotion = emotion;
+          highestValue = value;
+        }
+      });
+
+      return {
+        day,
+        emotion: highestEmotion,
+        value: highestValue,
+      };
+    });
+  }
 
   closeWarning(): void {
     this.errorMessage = "";
@@ -114,6 +226,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   showErrorMessage(error: any): void {
+    console.log("Error rendering chart: " + error.message);
     this.updatingUserInfo = false;
     this.errorMessage = error.message;
   }

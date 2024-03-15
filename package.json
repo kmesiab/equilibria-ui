@@ -25,6 +25,7 @@
     "browsersync": "^0.0.1-security",
     "chart.js": "^4.4.2",
     "datatables.net-bs4": "^2.0.2",
+    "date-fns": "^3.4.0",
     "del": "^7.1.0",
     "esm": "^3.2.25",
     "execa": "^8.0.1",

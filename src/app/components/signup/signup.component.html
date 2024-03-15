@@ -92,11 +92,13 @@
                 </a>
               </form>
               <hr>
-              <div class="text-center">
-                <a class="small" href="#forgot-password">Forgot Password?</a>
+              <!--
+              <div class="small text-center">
+                <a href="#forgot-password">Forgot Password?</a>
               </div>
-              <div class="text-center">
-                <a class="small" [routerLink]="[ '/login' ]">Already have an account?
+              -->
+              <div class="small text-center">Already have an account?
+                <a [routerLink]="[ '/login' ]">
                   Login!</a>
               </div>
             </div>
