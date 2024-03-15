@@ -12,6 +12,7 @@
         <i class="fa fa-brain"></i>
       </div>
       <div class="sidebar-brand-text mx-3">Equilibria</div>
+      <span class="badge badge-info">Beta</span>
     </a>
 
     <!-- Divider -->
@@ -70,10 +71,6 @@
            data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Customize AI</h6>
-          <a class="collapse-item" href="utilities-color.html">Age</a>
-          <a class="collapse-item" href="utilities-border.html">Tone</a>
-          <a class="collapse-item" href="utilities-animation.html">Style</a>
-          <a class="collapse-item" href="utilities-other.html">Length</a>
         </div>
       </div>
     </li>
@@ -92,6 +89,11 @@
         <i class="bi bi-clipboard2-pulse"></i>
         <span>Charts</span></a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="charts.html">
+        <i class="bi bi-robot"></i>
+        <span>Charts</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
@@ -102,11 +104,6 @@
         <span>Sign Out</span>
       </a>
     </li>
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
 
   </ul>
   <!-- End of Sidebar -->
@@ -121,8 +118,9 @@
       <nav
         class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-        <!-- Topbar Search -->
-        <small class="text-xs text-grey-600">{{ now }}</small>
+        <!-- Topbar -->
+
+        <small class="text-xs text-grey-600 text-right">{{ now }}</small>
 
 
       </nav>
@@ -133,6 +131,7 @@
 
         <div class="form-group row">
 
+          <!-- Therapist Phone Number Card -->
           <div class="col-sm-12 col-md-4 card-stack-bottom-margin">
             <!-- Emotions Graph -->
             <div class="card border-left-dark shadow h-100 py-2">
@@ -146,7 +145,7 @@
                     <div class="row no-gutters align-items-center">
                       <div class="col-auto">
                         <div class="h5 mb-0 mr-3 text-gray-800">
-                          +1 (833) 359-5081
+                          <a href="sms:18333595081">+1 (833) 359-5081</a>
                         </div>
                       </div>
 
@@ -160,6 +159,7 @@
             </div>
           </div>
 
+          <!-- Current Mood Card -->
           <div class="col-sm-12 col-md-4 card-stack-bottom-margin">
             <!-- Sentiment Meter -->
             <div class="card border-left-primary shadow h-100 py-2">
@@ -168,10 +168,11 @@
                   <div class="col mr-2">
                     <div
                       class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                      Current Mood (*beta)
+                      Strongest Emotion Expressed
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                      <i class="fa-regular fa-face-smile"></i> Neutral
+                    <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                      <!--<i class="fa-regular fa-heart"></i>-->
+                      <p class="dailyEmotionLabel">{{ dailyEmotion }}</p>
                     </div>
                   </div>
                   <div class="col-auto">
@@ -182,6 +183,7 @@
             </div>
           </div>
 
+          <!-- Overall Positivity Card -->
           <div class="col-sm-12 col-md-4 card-stack-bottom-margin">
             <!-- Emotions Graph -->
             <div class="card border-left-info shadow h-100 py-2">
@@ -194,13 +196,16 @@
                     </div>
                     <div class="row no-gutters align-items-center">
                       <div class="col-auto">
-                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">70%
+                        <div
+                          class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ positivityPercentage }}
+                          %
                         </div>
                       </div>
                       <div class="col">
                         <div class="progress progress-sm mr-2">
                           <div class="progress-bar bg-info" role="progressbar"
-                               style="width: 70%" aria-valuenow="70"
+                               [style.width.%]="positivityPercentage"
+                               [attr.aria-valuenow]="positivityPercentage"
                                aria-valuemin="0"
                                aria-valuemax="100"></div>
                         </div>
@@ -217,26 +222,52 @@
 
         </div>
 
-
+        <!-- Emotion Score Graph -->
         <div class="row">
           <div class="mb-12">
+
             <!-- Area Chart -->
             <div class="card shadow mb-4">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Emotion Scores</h6>
               </div>
               <div class="card-body">
+
                 <div class="chart-area">
-                  <canvas id="canvas">{{chart}}</canvas>
+                  <app-daily-emotion-graph [dailyAverages]="dailyAverages"></app-daily-emotion-graph>
                 </div>
                 <hr>
 
-                <small class="text-muted">Today's score is not set in stone! We can move it any direction we want. 😌</small>
+                <small class="text-muted">Today's score is not set in stone! We can
+                  move it any direction we want. 😌</small>
+
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Vader Graph -->
+        <div class="row">
+          <div class="mb-12">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Mood Events</h6>
+              </div>
+              <div class="card-body">
+                <div class="chart-area">
+                  <app-vader-graph [entries]="emotionScores"></app-vader-graph>
+                </div>
+                <hr>
+                <small class="text-muted">
+                  We all have ups and downs! This is how your mood is changing over the last 24hrs. 🎢
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- User Profile Card -->
         <div class="row">
           <div class="col-sm-12">
             <!-- User Profile Form -->
