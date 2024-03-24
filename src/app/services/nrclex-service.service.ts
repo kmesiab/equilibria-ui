@@ -1,8 +1,9 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {format, subDays} from "date-fns";
+import {format} from "date-fns";
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {LocalStorageService} from "./local-storage-service.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,9 @@ export class NrclexService {
 
   private baseUrl = 'https://api.my-eq.com/emotions/';
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService) {}
 
   getEmotions(userId: number, start: string, end: string, limit: number = 10, offset: number = 0): Observable<any> {
     // Prepare the HttpParams
@@ -22,9 +24,14 @@ export class NrclexService {
       .set('limit', limit.toString())
       .set('offset', offset.toString());
 
+    const bearerToken = this.localStorageService.getItem("jwt")
+
     return this.http.get<any>(`${this.baseUrl}${userId}`, {
       observe: 'response',
-      params
+      params,
+      headers: {
+        'Authorization': `Bearer ${bearerToken}` // Set the Authorization header with the bearer token
+      }
     }).pipe(
       map(response => {
         if (response.status !== 200) {
@@ -37,12 +44,13 @@ export class NrclexService {
 
   getEmotionsForDay(userId: number, date?: Date): Observable<any> {
     // Use the provided date or the current date if none is provided
-    const endDate = date || new Date();
+    const endDate = date ? new Date(date) : new Date();
+    // Convert endDate to UTC
+    endDate.setMinutes(endDate.getMinutes() + endDate.getTimezoneOffset());
 
-    // Subtract 6 days from the endDate to get the startDate
-    const startDate = subDays(endDate, 1);
-    startDate.setHours(0, 0, 0, 0); // Set to the start of the first day
-    endDate.setHours(23, 59, 59, 999); // Set to the end of the end date
+    // Create a new Date object for startDate, 24 hours before endDate
+    const startDate = new Date(endDate);
+    startDate.setUTCDate(startDate.getUTCDate() - 1); // Subtract 24 hours
 
     // Format start and end dates to "YYYY-MM-DD HH:MM:SS"
     // Note: This assumes you're using date-fns library's format function or a similar utility
@@ -55,7 +63,15 @@ export class NrclexService {
       .set('limit', '50')
       .set('offset', '0');
 
-    return this.http.get<any>(`${this.baseUrl}${userId}`, {params}).pipe(
+    const bearerToken = this.localStorageService.getItem("jwt")
+
+    return this.http.get<any>(`${this.baseUrl}${userId}`, {
+        observe: 'response',
+        params,
+        headers: {
+          'Authorization': `Bearer ${bearerToken}` // Set the Authorization header with the bearer token
+        }
+    }).pipe(
       map(response => response) // Directly return the response, adjust as needed
     );
   }
@@ -82,12 +98,13 @@ export class NrclexService {
 
   getEmotionsForWeek(userId: number, date?: Date): Observable<any> {
     // Use the provided date or the current date if none is provided
-    const endDate = date || new Date();
+    const endDate = date ? new Date(date) : new Date();
+    // Convert endDate to UTC
+    endDate.setMinutes(endDate.getMinutes() + endDate.getTimezoneOffset());
 
-    // Subtract 6 days from the endDate to get the startDate
-    const startDate = subDays(endDate, 6);
-    startDate.setHours(0, 0, 0, 0); // Set to the start of the first day
-    endDate.setHours(23, 59, 59, 999); // Set to the end of the end date
+    // Create a new Date object for startDate, 24 hours before endDate
+    const startDate = new Date(endDate);
+    startDate.setUTCDate(startDate.getUTCDate() - 7); // Subtract 24 hours
 
     // Format start and end dates to "YYYY-MM-DD HH:MM:SS"
     // Note: This assumes you're using date-fns library's format function or a similar utility
@@ -100,7 +117,15 @@ export class NrclexService {
       .set('limit', '50')
       .set('offset', '0');
 
-    return this.http.get<any>(`${this.baseUrl}${userId}`, {params}).pipe(
+    const bearerToken = this.localStorageService.getItem("jwt")
+
+    return this.http.get<any>(`${this.baseUrl}${userId}`, {
+      observe: 'response',
+      params,
+      headers: {
+        'Authorization': `Bearer ${bearerToken}` // Set the Authorization header with the bearer token
+      }
+    }).pipe(
       map(response => response) // Directly return the response, adjust as needed
     );
   }
