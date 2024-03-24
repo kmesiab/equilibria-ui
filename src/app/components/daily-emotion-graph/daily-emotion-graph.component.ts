@@ -88,7 +88,8 @@ export class DailyEmotionGraphComponent {
         data: data,
         borderColor: borderColor,
         backgroundColor: backgroundColor,
-        borderWidth: 1
+        borderWidth: 2,
+        tension: .4
       };
     });
 
@@ -99,7 +100,7 @@ export class DailyEmotionGraphComponent {
 
     // Now, create the chart with the labels and datasets
     this.emotionChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: chartLabels,
         datasets: datasets

@@ -9,7 +9,6 @@ import {UserService} from "../../services/user-service.service";
 import {AccountStatus} from "../../types/account-status";
 import {DailyAverage, HighestEmotion} from "../../types/emotion-reports";
 import {User} from "../../types/user";
-import {Chart, ChartData, ChartOptions} from 'chart.js/auto';
 import { NrcLexEntry } from "../../types/nrclex-entry";
 import {
   DailyEmotionGraphComponent
@@ -96,13 +95,16 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    this.nrcLexService.getEmotionsForDay(userId).subscribe({
+    this.nrcLexService.getEmotionsForWeek(userId).subscribe({
       next: (emotions) => this.handleFetchEmotions(emotions),
       error: (error) => this.showErrorMessage(error)
     });
   }
 
-  handleFetchEmotions(entries: NrcLexEntry[]): void {
+  handleFetchEmotions(response: HttpResponse<any>): void {
+
+    let entries = response.body;
+
     if (!Array.isArray(entries) || entries.length === 0) {
       console.error('Entries is not an array or is empty:', entries);
       return;
