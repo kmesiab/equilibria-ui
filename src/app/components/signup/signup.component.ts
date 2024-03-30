@@ -49,6 +49,7 @@ export class SignupComponent {
         this.firstname = u.firstname;
         this.lastname = u.lastname;
         this.email = u.email;
+        this.providerCode = u.provider_code;
       }
     }
   }
@@ -147,6 +148,8 @@ export class SignupComponent {
       accountVerified: false,
       accountStatusId: AccountStatus.PENDING_ACTIVATION,
       accountStatus: mapStatusIdToString(AccountStatus.PENDING_ACTIVATION),
+      nudge_enabled: true,
+      provider_code: this.providerCode,
     };
   }
 

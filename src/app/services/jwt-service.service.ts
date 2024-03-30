@@ -25,6 +25,8 @@ export class JwtService {
       accountVerified: customClaims.PhoneVerified,
       accountStatusId: customClaims.AccountStatusID,
       accountStatus: customClaims.AccountStatus,
+      nudge_enabled: customClaims.NudgeEnabled,
+      provider_code: customClaims.ProviderCode,
     };
   }
 

@@ -10,6 +10,8 @@ export interface User {
     accountVerified: boolean;
     accountStatusId: AccountStatus;
     accountStatus: string;
+    nudge_enabled: boolean;
+    provider_code: string;
   }
 
   export function mapApiDataToUser(apiData: any): User {
@@ -23,5 +25,7 @@ export interface User {
       accountStatusId: apiData.status_id,
       accountStatus: mapStatusIdToString(apiData.status_id),
       password: apiData.password,
+      nudge_enabled: apiData.nudge_enabled,
+      provider_code: apiData.provider_code,
     };
   }

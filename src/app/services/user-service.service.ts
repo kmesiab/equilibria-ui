@@ -77,6 +77,8 @@ export class UserService {
       accountVerified: apiData.phone_verified,
       accountStatus: apiData.status,
       accountStatusId: apiData.status_id,
+      nudge_enabled: apiData.nudge_enabled,
+      provider_code: apiData.provider_code,
     };
   }
 }

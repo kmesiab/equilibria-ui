@@ -7,6 +7,8 @@ export interface JwtCustomClaims {
   AccountStatusID: number;
   AccountStatus: string;
   PhoneVerified: boolean;
+  ProviderCode: string;
+  NudgeEnabled: boolean;
   aud: string;
   exp: number;
   iss: string;
