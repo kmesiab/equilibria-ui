@@ -45,21 +45,21 @@ export class DailyEmotionGraphComponent {
   borderColorPalette = [
     'rgb(75, 192, 192)', // green (joy)
     'rgb(255, 99, 132)', // red (anger)
-    'rgb(201, 203, 207)', // grey (fear)
+    // 'rgb(201, 203, 207)', // grey (fear)
     'rgb(54, 162, 235)', // blue (sadness)
-    'rgb(153, 102, 255)', // purple (trust)
+    // 'rgb(153, 102, 255)', // purple (trust)
   ];
 
   backgroundColorPalette = [
     'rgb(75, 192, 192)', // green (joy)
     'rgb(255, 99, 132)', // red (anger)
-    'rgb(201, 203, 207)', // grey (fear)
+    // 'rgb(201, 203, 207)', // grey (fear)
     'rgb(54, 162, 235)', // blue (sadness)
     'rgb(153, 102, 255)', // purple (trust)
   ];
 
   includedEmotions: (keyof NrcLexEntry)[] = [
-    'joy', 'anger', 'fear', 'sadness', 'trust'
+    'joy', 'anger', 'sadness',
   ];
 
   renderChart(): void {
@@ -100,7 +100,7 @@ export class DailyEmotionGraphComponent {
 
     // Now, create the chart with the labels and datasets
     this.emotionChart = new Chart(ctx, {
-      type: 'line',
+      type: 'bar',
       data: {
         labels: chartLabels,
         datasets: datasets
