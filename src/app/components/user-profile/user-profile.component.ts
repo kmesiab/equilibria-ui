@@ -14,6 +14,8 @@ import {
   DailyEmotionGraphComponent
 } from "../daily-emotion-graph/daily-emotion-graph.component";
 import {VaderGraphComponent} from "../vader-graph/vader-graph.component";
+import initHelpHero, {HelpHero} from 'helphero';
+
 
 
 @Component({
@@ -25,6 +27,8 @@ import {VaderGraphComponent} from "../vader-graph/vader-graph.component";
 })
 
 export class UserProfileComponent implements OnInit {
+
+  hlp: HelpHero
 
   now = new Date();
 
@@ -67,6 +71,7 @@ export class UserProfileComponent implements OnInit {
     private currentUserService: CurrentUserService
   ) {
     this.user = this.currentUserService.getUser()
+    this.hlp = initHelpHero('9D94seCxsU');
   }
 
   ngOnInit(): void {
@@ -85,6 +90,11 @@ export class UserProfileComponent implements OnInit {
     }
 
     this.renderCharts();
+
+    const currentUser = this.currentUserService.getUser();
+
+    this.hlp.identify(currentUser.phone_number);
+
   }
 
   renderCharts(): void {
