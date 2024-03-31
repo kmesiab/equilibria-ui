@@ -70,7 +70,7 @@ export class UserProfileComponent implements OnInit {
     private nrcLexService: NrclexService,
     private currentUserService: CurrentUserService
   ) {
-    this.user = this.currentUserService.getUser()
+    this.user = this.currentUserService.getUser();
     this.hlp = initHelpHero('9D94seCxsU');
   }
 
@@ -84,6 +84,9 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
+    this.user = this.currentUserService.getUser()
+    console.log(this.user)
+
     if (this.user !== null && this.user.accountStatusId !== AccountStatus.ACTIVE) {
       this.router.navigate(['/login']);
       return;
@@ -91,9 +94,7 @@ export class UserProfileComponent implements OnInit {
 
     this.renderCharts();
 
-    const currentUser = this.currentUserService.getUser();
-
-    this.hlp.identify(currentUser.phone_number);
+    this.hlp.identify(this.user.phone_number);
 
   }
 
@@ -214,11 +215,17 @@ export class UserProfileComponent implements OnInit {
     return;
   }
 
+  toggleNudges(): void {
+    this.user.nudge_enabled = !this.user.nudge_enabled;
+    this.updateProfile()
+  }
+
   updateProfile(): void {
 
     this.closeWarning();
     this.updatingUserInfo = true
     this.user.password = null;
+    console.log(this.user)
     this.userService.update(this.user).subscribe(
       (response: HttpResponse<any>) => this.handleUpdateResponse(response),
       (error: any) => this.showErrorMessage(error)
@@ -231,6 +238,8 @@ export class UserProfileComponent implements OnInit {
 
     if (response.status === 200) {
       this.currentUserService.setJwt(response.body.data.token)
+      this.user = this.currentUserService.getUser()
+      console.log(this.user)
       this.updateMessage = 'Your profile has been updated.';
     } else {
       this.showErrorMessage(new Error(response.body.message));

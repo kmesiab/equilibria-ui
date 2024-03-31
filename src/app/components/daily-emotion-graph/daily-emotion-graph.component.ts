@@ -100,7 +100,7 @@ export class DailyEmotionGraphComponent {
 
     // Now, create the chart with the labels and datasets
     this.emotionChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: chartLabels,
         datasets: datasets
