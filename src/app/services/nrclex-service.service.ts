@@ -100,7 +100,8 @@ export class NrclexService {
     // Use the provided date or the current date if none is provided
     const endDate = date ? new Date(date) : new Date();
     // Convert endDate to UTC
-    endDate.setMinutes(endDate.getMinutes() + endDate.getTimezoneOffset());
+    endDate.setMinutes(endDate.getMinutes());
+    const endDateString = endDate.toUTCString()
 
     // Create a new Date object for startDate, 24 hours before endDate
     const startDate = new Date(endDate);
@@ -109,7 +110,7 @@ export class NrclexService {
     // Format start and end dates to "YYYY-MM-DD HH:MM:SS"
     // Note: This assumes you're using date-fns library's format function or a similar utility
     const startFormatted = format(startDate, "yyyy-MM-dd HH:mm:ss");
-    const endFormatted = format(endDate, "yyyy-MM-dd HH:mm:ss");
+    const endFormatted = format(endDateString, "yyyy-MM-dd HH:mm:ss");
 
     let params = new HttpParams()
       .set('start', startFormatted)
