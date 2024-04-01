@@ -85,7 +85,6 @@ export class UserProfileComponent implements OnInit {
     }
 
     this.user = this.currentUserService.getUser()
-    console.log(this.user)
 
     if (this.user !== null && this.user.accountStatusId !== AccountStatus.ACTIVE) {
       this.router.navigate(['/login']);
@@ -128,7 +127,16 @@ export class UserProfileComponent implements OnInit {
     // Populate groupedByDay with entries
     entries.forEach(entry => {
       // Assuming 'created_at' is a string representing the date and time
-      const day = new Date(entry.created_at).toISOString().split('T')[0]; // Extract the date part
+      const day = new Date(entry.created_at).toLocaleString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      console.log(day)
+
       if (!groupedByDay[day]) {
         groupedByDay[day] = [];
       }
@@ -141,8 +149,8 @@ export class UserProfileComponent implements OnInit {
       const counts: Record<string, number> = {};
 
       this.includedEmotions.forEach(emotion => {
-        dailySums[emotion] = 0;
-        counts[emotion] = 0;
+        dailySums[emotion] = 0.1;
+        counts[emotion] = 0.1;
       });
 
       dayEntries.forEach(entry => {
@@ -170,8 +178,6 @@ export class UserProfileComponent implements OnInit {
 
     let topEmotion = this.findHighestEmotion(this.dailyAverages)
     this.dailyEmotion = topEmotion[0].emotion.toUpperCase()
-
-    console.log(this.dailyAverages)
 
     let vaderSentiment =
       (this.dailyAverages[0].averages['vader_neu'] +

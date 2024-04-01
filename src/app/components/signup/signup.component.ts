@@ -27,7 +27,7 @@ export class SignupComponent {
   errorMessage = "";
   password = "";
   password2 = "";
-  providerCode = "";
+  providerCode = "BETA24";
 
   constructor(
     private router: Router,
@@ -40,10 +40,14 @@ export class SignupComponent {
   ngOnInit(): void {
     if (this.currentUserService.isLoggedIn()) {
       let u = this.currentUserService.getUser();
+
+      // If the user is already logged in, redirect them to the dashboard
       if (u !== null && u.accountStatusId === AccountStatus.ACTIVE) {
         this.router.navigate(["/profile"]);
         return;
       }
+
+      // The user exists but is not active.
       if (u !== null) {
         this.phoneNumber = u.phone_number;
         this.firstname = u.firstname;
