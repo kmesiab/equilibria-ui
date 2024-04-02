@@ -15,7 +15,7 @@ export class DailyEmotionGraphComponent {
     | ElementRef<HTMLCanvasElement>
     | undefined;
 
-  emotionChart: Chart<"doughnut", number[], string> | undefined;
+  emotionChart: Chart<"polarArea", unknown[], string> | undefined;
   _dailyAverages: { averages: Record<string, number>; day: string }[] = [];
 
   @Input() set dailyAverages(
@@ -35,14 +35,6 @@ export class DailyEmotionGraphComponent {
     window.addEventListener("resize", this.resizeChart);
   }
 
-<<<<<<< Updated upstream
-=======
-  ngOnDestroy(): void {
-    window.removeEventListener("resize", this.resizeChart);
-  }
-
-
->>>>>>> Stashed changes
   private resizeChart = (): void => {
     if (this.emotionChart) {
       this.emotionChart.resize();
@@ -62,7 +54,7 @@ export class DailyEmotionGraphComponent {
   ];
 
   backgroundColorPalette = [
-    "rgba(255, 205, 86, 0.8)", // yellow (joy)
+    "rgba(255, 205, 86, 0.5)", // yellow (joy)
     "rgba(255, 99, 132, 0.5)", // red (anger)
     "rgba(54, 162, 235, 0.5)", // blue (sadness)
     "rgba(255, 159, 64, 0.2)", // orange (anticipation)
@@ -73,7 +65,7 @@ export class DailyEmotionGraphComponent {
     "rgba(255, 99, 132, 0.2)", // pink (negative, similar to anger but softer)
   ];
 
-  includedEmotions: (keyof NrcLexEntry)[] = ["joy", "anger", "sadness"];
+  includedEmotions: (keyof NrcLexEntry)[] = ["joy", "anger", "sadness", "fear", "trust"];
 
   renderChart(): void {
     if (!this.canvas) return;
@@ -84,53 +76,42 @@ export class DailyEmotionGraphComponent {
       return;
     }
 
+    // Aggregate values for each emotion
     const emotionAverages = this.calculateAggregateForEmotion();
 
-    // Ensure that labels match the emotion names properly
+    // Use the keys from emotionAverages as labels to ensure they match the data
     const chartLabels = Object.keys(emotionAverages).map(emotion =>
       emotion.charAt(0).toUpperCase() + emotion.slice(1) // Capitalize the first letter
     );
 
-    // Data for the chart, mapped directly from the emotion averages
+    // Map each emotion to its corresponding aggregate value
     const data = Object.values(emotionAverages);
 
-    // Colors for each segment of the doughnut chart
-    const backgroundColors = chartLabels.map((_, index) =>
+    // Map each label to a color in your palettes
+    // This assumes the order of colors in your palette matches the order of emotions in includedEmotions
+    const backgroundColors = chartLabels.map((label, index) =>
       this.backgroundColorPalette[index % this.backgroundColorPalette.length]
     );
 
-    // If the chart instance already exists, destroy it before creating a new one
-    if (this.emotionChart) {
-      this.emotionChart.destroy();
-    }
-
     this.emotionChart = new Chart(ctx, {
-      type: 'doughnut',
+      type: 'polarArea',
       data: {
         labels: chartLabels,
         datasets: [{
-          label: 'Emotions',
           data: data,
           backgroundColor: backgroundColors,
           borderWidth: 2,
         }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: 'Emotion Distribution'
+        scales: {
+          r: {
+            beginAtZero: true
           }
         }
       }
     });
   }
-
 
   calculateAggregateForEmotion(): { [emotion: string]: number } {
     const emotionSums: { [key: string]: number } = {};
