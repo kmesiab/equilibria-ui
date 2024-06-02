@@ -9,6 +9,7 @@ import {
   UserProfileComponent
 } from "./components/user-profile/user-profile.component";
 import { PersonalReportComponent } from './components/personal-report/personal-report.component';
+import { TherapistDashboardComponent } from './components/therapist-dashboard/therapist-dashboard.component';
 
 export const routes: Routes = [
   {path: '', component: LanderRedirectComponent},
@@ -17,4 +18,5 @@ export const routes: Routes = [
   {path: 'otp', component: OtpComponent},
   {path: 'profile', component: UserProfileComponent},
   {path: 'personal-report', component: PersonalReportComponent},
+  {path: 'therapist', component: TherapistDashboardComponent},
 ];

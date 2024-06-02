@@ -1,0 +1,29 @@
+.alert-warning {
+  font-weight: bold;
+}
+
+.alert-info {
+  font-weight: bold;
+}
+
+.card {
+  border-left: 0.25rem solid #4e73df; /* Primary color border */
+}
+
+.card .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-primary {
+  color: #4e73df !important;
+}
+
+.text-gray-800 {
+  color: #5a5c69 !important;
+}
+
+.text-muted {
+  color: #858796 !important;
+}

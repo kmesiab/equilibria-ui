@@ -1,0 +1,41 @@
+<!-- Fact Feed Wrapper -->
+<div class="container-fluid">
+
+  <!-- Error Alert -->
+  <div *ngIf="error" class="alert alert-warning mt-3">
+    Error: {{ error }}
+  </div>
+
+  <!-- No Facts Available Alert -->
+  <div *ngIf="!error && facts.length === 0" class="alert alert-info mt-3">
+    No facts available.
+  </div>
+
+  <!-- Fact Feed List -->
+  <div *ngIf="facts.length > 0" class="row mt-3">
+    <div *ngFor="let fact of facts" class="col-sm-12 mb-3">
+      <div class="card shadow h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                Fact
+              </div>
+              <div class="mb-2">
+                <small class="text-muted">{{ fact.firstname }} {{ fact.lastname }}</small>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ fact.body }}</div>
+              <div class="mt-2 text-muted">
+                <small>Reasoning: {{ fact.reasoning }}</small>
+              </div>
+            </div>
+          </div>
+          <div class="text-right mt-2">
+            <small class="text-muted">{{ fact.created_at | date: 'short' }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
