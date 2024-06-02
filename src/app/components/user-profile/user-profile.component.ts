@@ -15,13 +15,23 @@ import {
 } from "../daily-emotion-graph/daily-emotion-graph.component";
 import {VaderGraphComponent} from "../vader-graph/vader-graph.component";
 import initHelpHero, {HelpHero} from 'helphero';
+import { SidebarComponent } from "../sidebar/sidebar.component";
+import { TopBarComponent } from "../top-bar/top-bar.component";
 
 
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, VaderGraphComponent, DailyEmotionGraphComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    VaderGraphComponent,
+    DailyEmotionGraphComponent,
+    SidebarComponent,
+    TopBarComponent
+  ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss'
 })
@@ -215,11 +225,6 @@ export class UserProfileComponent implements OnInit {
     this.updateMessage = "";
   }
 
-  signOut(): void {
-    this.currentUserService.clearJwt();
-    this.router.navigate(['/login']);
-    return;
-  }
 
   toggleNudges(): void {
     this.user.nudge_enabled = !this.user.nudge_enabled;
