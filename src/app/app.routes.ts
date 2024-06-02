@@ -8,11 +8,13 @@ import { SignupComponent } from './components/signup/signup.component';
 import {
   UserProfileComponent
 } from "./components/user-profile/user-profile.component";
+import { PersonalReportComponent } from './components/personal-report/personal-report.component';
 
 export const routes: Routes = [
   {path: '', component: LanderRedirectComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'otp', component: OtpComponent},
-  {path: 'profile', component: UserProfileComponent}
+  {path: 'profile', component: UserProfileComponent},
+  {path: 'personal-report', component: PersonalReportComponent},
 ];
