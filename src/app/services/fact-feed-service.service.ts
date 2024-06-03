@@ -29,7 +29,7 @@ export class FactFeedService {
         if (response.status !== 200) {
           throw new Error('Server error');
         }
-        return response.body!;
+        return response.body ? response.body : [];
       }),
       catchError(this.handleError)
     );
