@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PatientService } from './patient-service.service';
-import { Patient } from '../types/patient';
+import type { Patient } from '../types/patient';
 
 describe('PatientService', () => {
   let service: PatientService;
