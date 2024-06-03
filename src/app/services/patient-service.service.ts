@@ -21,7 +21,7 @@ export class PatientService {
         if (response.status !== 200) {
           throw new Error('Server error');
         }
-        return response.body!.data;
+        return response.body ? response.body.data : [];
       }),
       catchError(this.handleError)
     );
