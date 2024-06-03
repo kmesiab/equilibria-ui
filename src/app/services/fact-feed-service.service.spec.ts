@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FactFeedService } from './fact-feed-service.service';
-import { Fact } from '../types/fact';
+import type { Fact } from '../types/fact';
 
 describe('FactFeedService', () => {
   let service: FactFeedService;
