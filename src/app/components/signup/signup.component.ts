@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { HttpResponse } from "@angular/common/http";
-import { User } from "../../types/user";
+import { User, UserType } from "../../types/user";
 import { AccountStatus, mapStatusIdToString } from "../../types/account-status"
 import { UserSignupResponse } from "../../types/user-signup-response";
 import { UserService } from "../../services/user-service.service";
@@ -151,6 +151,7 @@ export class SignupComponent {
       password: this.password,
       accountVerified: false,
       accountStatusId: AccountStatus.PENDING_ACTIVATION,
+      user_type_id: UserType.PATIENT,
       accountStatus: mapStatusIdToString(AccountStatus.PENDING_ACTIVATION),
       nudge_enabled: true,
       provider_code: this.providerCode,

@@ -10,7 +10,7 @@ import { Fact } from '../types/fact';
 })
 export class FactFeedService {
 
-  public apiUrl = 'http://127.0.0.1:443/therapist/patients/facts'; // Replace with your actual API URL
+  public apiUrl = 'https://api.my-eq.com/therapist/patients/facts'; // Replace with your actual API URL
 
   constructor(
     private http: HttpClient,

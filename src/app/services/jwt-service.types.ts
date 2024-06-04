@@ -5,6 +5,7 @@ export interface JwtCustomClaims {
   PhoneNumber: string;
   UserID: number;
   AccountStatusID: number;
+  UserTypeID: number;
   AccountStatus: string;
   PhoneVerified: boolean;
   ProviderCode: string;
