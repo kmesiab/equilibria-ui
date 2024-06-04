@@ -29,5 +29,11 @@ export class TherapistDashboardComponent {
       this.router.navigate(['/login']);
       return;
     }
+
+    if (!this.currentUserService.isTherapist()) {
+      this.router.navigate(['/profile']);
+      return;
+    }
+
   }
  }

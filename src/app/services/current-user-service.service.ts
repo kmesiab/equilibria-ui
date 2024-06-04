@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../types/user';
+import { User, UserType } from '../types/user';
 import { LocalStorageService } from '../services/local-storage-service.service';
 import { JwtService } from "../services/jwt-service.service";
 
@@ -43,5 +43,14 @@ export class CurrentUserService {
 
   getUser(): User {
     return this.jwtService.getUserFromJWT(this.getJwt());
+  }
+
+isTherapist(): boolean {
+  console.log(this.getUser())
+    return this.getUser().user_type_id === UserType.THERAPIST;
+  }
+
+  isPatient(): boolean {
+    return this.getUser().user_type_id === UserType.PATIENT;
   }
 }

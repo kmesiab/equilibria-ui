@@ -9,7 +9,7 @@ import { Patient } from '../types/patient'; // Adjust the import according to yo
 })
 export class PatientService {
 
-  private apiUrl = 'http://127.0.0.1:443/patients'; // Replace with your actual API URL
+  private apiUrl = 'https://api.my-eq.com/patients'; // Replace with your actual API URL
 
   constructor(private http: HttpClient) { }
 

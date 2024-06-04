@@ -22,6 +22,7 @@ export class JwtService {
       phone_number: customClaims.PhoneNumber,
       id: customClaims.UserID,
       password: "<REDACTED>",
+      user_type_id: customClaims.UserTypeID,
       accountVerified: customClaims.PhoneVerified,
       accountStatusId: customClaims.AccountStatusID,
       accountStatus: customClaims.AccountStatus,

@@ -94,6 +94,11 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
+    if (this.currentUserService.isTherapist()) {
+      this.router.navigate(['/therapist']);
+      return;
+    }
+
     this.user = this.currentUserService.getUser()
 
     if (this.user !== null && this.user.accountStatusId !== AccountStatus.ACTIVE) {
@@ -250,7 +255,6 @@ export class UserProfileComponent implements OnInit {
     if (response.status === 200) {
       this.currentUserService.setJwt(response.body.data.token)
       this.user = this.currentUserService.getUser()
-      console.log(this.user)
       this.updateMessage = 'Your profile has been updated.';
     } else {
       this.showErrorMessage(new Error(response.body.message));
